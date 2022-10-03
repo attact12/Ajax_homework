@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>桃園景點一覽表</h1>
+<ul id="uli"></ul>
+
+@section Scripts{
+    <script src="~/js/travel.js"></script>
+    <script>
+        const theUI = document.querySelector("#uli")
+        const docFrag = document.createDocumentFragment()
+        for (var i = 0; i < DATAS.length; i++) {
+            console.log(DATAS[i].Name)
+
+            const { Name,Add,TYWebsite } = DATAS[i]
+            const text = document.createTextNode("景點名稱:"+Name+"  ,地址:"+Add+"  ,連結網址:"+TYWebsite)
+            const eleLi = document.createElement("li")
+            eleLi.appendChild(text)
+            docFrag.appendChild(eleLi)
+        }
+        theUI.appendChild(docFrag)
+    </script>
+  
+}
