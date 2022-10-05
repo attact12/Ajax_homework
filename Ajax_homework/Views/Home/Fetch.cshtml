@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Fetch";
+}
+
+<h1>Fetch</h1>
+<select id="select1"></select>
+<select id="select2"></select>
+<img id="img1"/>
+@section Scripts{
+    <script>
+    const divshow = document.querySelector("#div");
+    const selectcity = document.querySelector("#select1");
+    const selectsite = document.querySelector("#select2");
+    const ingshow = document.querySelector("#img1");
+    @*fetch("@Url.Content("~/homework/city")")//GET方法
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(city => {
+                console.log(city);
+                const opt = new Option(city, city)
+                selectcity.options.add(opt);
+            })
+        })*@
+    @*fetch("@Url.Content("~/homework/Site")")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(site => {
+                const opt = new Option(site, site)
+                selectsite.options.add(opt);
+            })
+        })*@
+    async function loadCity() {
+        let response = await fetch("@Url.Content("~/homework/city")");
+        let datas = await response.json();
+        datas.forEach(city => {
+            console.log(city);
+            const opt = new Option(city, city)
+            selectcity.options.add(opt);
+        })
+        }
+        loadCity();
+    </script>
+
+ }
+

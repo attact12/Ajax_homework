@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "Ajevent";
+}
+@section Styles{
+    <style>
+        #img1 {
+            display: none;
+        }
+    </style>
+
+}
+<h1>Ajevent</h1>
+<button class="btn btn-primary m-1" id="btnst">star</button>
+<button class="btn btn-danger m-1" id="btnend">end</button>
+<img id="img1" src="~/Picture/9104197_loading_refresh_reload_update_wait_icon.png" />
+<div id="div1"></div>
+@section Scripts{
+    <script>
+        const btnstar = document.querySelector("#btnst")
+        const btnend = document.querySelector("#btnend")
+        const img = document.querySelector("#img1")
+        const div = document.querySelector("#div1")
+        const xhr = new XMLHttpRequest()
+        btnend.addEventListener("click", () => {
+            xhr.abort()
+        })
+        btnstar.addEventListener("click", () => {
+            
+            xhr.addEventListener("load", () => {
+                const data = xhr.responseText
+                console.log("load")
+            })
+            xhr.addEventListener("loadstart", () => {
+                console.log("開始")
+                btnstar.textContent = "loading...."
+                btnstar.setAttribute("disable", "disable")
+                img.style.display="inline"
+            })
+            xhr.addEventListener("loadend", () => {
+                console.log("結束")
+                btnstar.textContent = "start"
+                btnstar.removeAttribute("disable")
+                img.style.display = "none"
+            })
+            xhr.addEventListener("timeout", () => {
+                console.log("timeout")
+                div.textContent="伺服器忙碌中"
+            })
+            xhr.addEventListener("abort", () => {
+                console.log("abort")
+                div.textContent="您停止ajax"
+            })
+            xhr.open("GET", "@Url.Content("~/Homework/sleep")")
+            xhr.timeout=3000
+            xhr.send()//對server發出要求ajax開始
+        })
+    </script>
+}
