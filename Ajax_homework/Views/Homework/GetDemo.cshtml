@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "GetDemo";
+}
+
+<h1>GetDemo</h1>
+<input type="text" id="txt"/><button id="btn">click</button>
+<div id="div1"></div>
+@section Scripts{ 
+    <script>
+        const btn = document.querySelector("#btn")
+        const txt = document.querySelector("#txt")
+        const thediv = document.querySelector("#div1")
+        btn.addEventListener("click", () => {
+            console.log(txt.value)//讀取txt的值
+        const xhr=new XMLHttpRequest()//建立ajax物件
+            xhr.open("GET", `/Homework/demo?keyword=${txt.value}`)
+            xhr.send()
+            xhr.addEventListener("load", () => {
+                const data = xhr.responseText
+                thediv.textContent = data
+            }
+                
+            )
+        })
+    </script>
+}

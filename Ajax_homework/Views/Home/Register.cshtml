@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        @* name=abc *@
+        <form name="userInfo" method="post" action="~/Homework/Register">
+            <div class="form-group">
+                <label for="InputName">姓名</label>
+                <input type="text" class="form-control" id="InputName" name="Name">
+                <small id="emailHelp" class="form-text text-muted"></small>
+            </div>
+            <div class="form-group">
+                <label for="InputEmail">電子郵件</label>
+                <input type="email" class="form-control" id="InputEmail" name="Email">
+            </div>
+            <div class="form-group">
+                <label for="InputAge">年紀</label>
+                <input type="number" class="form-control" id="InputAge" name="Age">
+            </div>
+            <div class="form-group">
+                <label for="InputFile">選擇檔案</label>
+                <input type="file" class="form-control-file" id="InputFile" name="File1">
+            </div>
+            <button type="submit" id="buttonSubmit" class="btn btn-primary">送出</button>
+        </form>
+        <div class="alert alert-primary" role="alert" id="div1"></div>
+
+    </div>
+    <div class="col-3"></div>
+</div>
+@section Scripts{
+    <script>
+        const name = document.querySelector("#InputName")
+    const btn = document.querySelector("#buttonSubmit");
+    const div = document.querySelector("#div1");
+    btn.addEventListener("click", eve => {
+        eve.preventDefault();
+
+        //資料用fetch將資料送到server端
+        const formdata = new FormData(document.userInfo);
+        fetch(document.userInfo.action, {
+            method: "POST",
+            body:formdata,
+        }).then(response =>  response.text())
+            .then(data => div.textContent = data)
+
+
+
+        //將資料用http原生方法送到server端
+        //const xhr = new XMLHttpRequest();
+
+        //xhr.addEventListener("load", () => {
+        //    const data = xhr.responseText;
+        //    div.textContent = data;
+        //})
+
+        //xhr.open("POST", document.userInfo.action);
+        //xhr.send(formdata);
+    })
+        name.addEventListener("blur", eve => {
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", () => {
+                const data = xhr.responseText;
+                div.textContent = data;
+            })
+
+            const url = "@Url.Content("~/home/checkdata")";
+            const para = `?Name=${name.value}`;
+            xhr.open("GET", url+para);
+            xhr.send();
+        })
+    </script>
+}

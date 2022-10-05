@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "Address";
+}
+
+<h1>Address</h1>
+<select id="select">
+    @*<option value="a"></option>
+    <option value="b"></option>
+    <option value="c"></option>
+    <option value="d"></option>
+    <option value="e"></option>*@
+
+</select>
+<select id="select1"></select>
+<select id="select2"></select>
+@section Scripts{ 
+<script>
+    const xhr = new XMLHttpRequest();//step1
+    const selcity = document.querySelector("#select")
+    const selregion = document.querySelector("#select1")
+    const selrod = document.querySelector("#select2")
+    //建立promise物件
+    //參數1程式碼執行成功會呼叫的function
+    //參數2程式碼執行成功會呼叫的function
+    function print(data) {
+        const promise = new Promise((resolve, reject) => {
+            setTimeout(() => {resolve(data) },1000)
+        })
+        return promise;
+    }
+    print("A")
+        .then(data => {
+            console.log(data)
+            return print("B")
+        })
+        .then(data => {
+            console.log(data)
+            return print("C")
+        })
+        .then(data => {
+            console.log(data);
+        })
+
+    selcity.addEventListener("change", ()=>{
+        console.log(selcity.options[selcity.selectedIndex].value)
+
+    })
+
+    //step3
+    xhr.addEventListener("load", () => {
+        //Server傳回來的JSON是字串
+        //要轉成JSON物件才能使用 JSON.parse("JSON字串")  JSON.stringify(JSON物件)
+        const datas = JSON.parse(xhr.responseText)
+        datas.forEach(city => {
+            const opt = new Option(city, city)
+            selcity.options.add(opt);
+        })
+    })
+    xhr.open("GET","@Url.Content("~/Homework/city")")//step2
+    xhr.send();
+</script>
+}
